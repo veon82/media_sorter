@@ -71,7 +71,7 @@ class MediaSorter(object):
         shutil.copy(source_file, sorted_path)
 
     def data_on_filename(self, source_file):
-        return re.search(r'(.{0,})((\d{4})(0[0-9]|1[0-2])([0-2][0-9]|3[0-1]))(.{0,})', source_file)
+        return re.search(r'(.{0,})-((\d{4})(0[0-9]|1[0-2])([0-2][0-9]|3[0-1]))-(.{0,})', source_file)
 
     def sort_media(self, dest_path, media_path, media_create_tag):
         sorted_path = PurePath(dest_path).joinpath(media_path)
