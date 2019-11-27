@@ -43,6 +43,7 @@ class MediaSorter(object):
     def __init__(self, mediafiles):
         locale.setlocale(locale.LC_ALL, 'it_IT.UTF-8')
         self.mediafiles = mediafiles
+        self.dateregex = r'(\d{4}(0[0-9]|1[0-2])([0-2][0-9]|3[0-1]))'
 
     def __get_meta_data(self):
         if not self.mediafiles:
@@ -71,7 +72,7 @@ class MediaSorter(object):
         shutil.copy(source_file, sorted_path)
 
     def data_on_filename(self, source_file):
-        return re.search(r'(.{0,})-((\d{4})(0[0-9]|1[0-2])([0-2][0-9]|3[0-1]))-(.{0,})', source_file)
+        return re.search('.{0,}[-_]' + self.dateregex + '[-_].{0,}', source_file)
 
     def sort_media(self, dest_path, media_path, media_create_tag):
         sorted_path = PurePath(dest_path).joinpath(media_path)
@@ -85,7 +86,7 @@ class MediaSorter(object):
                 source_file = md["SourceFile"]
                 match = self.data_on_filename(PurePath(source_file).name)
                 if match:
-                    create_date_str = self.__get_datestr_from_filename(match.group(2))
+                    create_date_str = self.__get_datestr_from_filename(match.group(1))
                 else:
                     create_date_str = self.__get_datestr_from_tagvalue(md[media_create_tag])
                 self.__copy_sorted_file(source_file, create_date_str, sorted_path)
